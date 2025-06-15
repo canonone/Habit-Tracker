@@ -10,8 +10,8 @@ export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async createUser(body: CreateUserDto) {
-    const { email, password } = body;
-    const user = this.repo.create({ email, password });
+    // const { email, password } = body;
+    const user = this.repo.create(body);
     return this.repo.save(user);
   }
 
