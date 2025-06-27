@@ -10,13 +10,15 @@ export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async createUser(body: CreateUserDto) {
-    // const { email, password } = body;
     const user = this.repo.create(body);
     return this.repo.save(user);
   }
 
   async findById(id: string) {
     const user = await this.repo.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('user does not exist');
+    }
     return user;
   }
 
@@ -34,7 +36,8 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('user does not exist');
     }
-    return this.repo.delete(id);
+    this.repo.delete(id);
+    return user;
   }
 
   async updateUser(id: string, body: UpdateUSerDto) {
