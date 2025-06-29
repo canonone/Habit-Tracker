@@ -27,5 +27,5 @@ export default class User extends BaseEntity {
     default: AuthProvider.LOCAL,
     nullable: false,
   })
-  provier: AuthProvider;
+  provider: AuthProvider;
 }
