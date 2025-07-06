@@ -1,10 +1,10 @@
-import { Controller, Post, Get, Body, Param, Req } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, Req, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import CreateUserDto from '../user/dtos/create-user.dto';
 import LoginDto from '../user/dtos/user-login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UseGuards } from '@nestjs/common';
-
+import { updatePassword } from './interface/utility-interface';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -33,5 +33,14 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req) {
     return req.user;
+  }
+
+  @Put('forgotPassword/:id')
+  async forgotPassword(@Body() body: updatePassword, @Param('id') id: string) {
+    const user = await this.authService.forgotPassword(id, body);
+    return {
+      status: 'successful',
+      message: 'user password updated successfully',
+    };
   }
 }
