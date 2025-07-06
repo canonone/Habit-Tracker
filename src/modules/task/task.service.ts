@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import Task from './entities/task.entity';
 import CreateTaskDto from './dtos/create-task.dto';
 import UpdateTaskDto from './dtos/update-task.dto';
-import User from '../user/entities/user.entity';
+import {User} from '../user/entities/user.entity';
 
 @Injectable()
 export class TaskService {

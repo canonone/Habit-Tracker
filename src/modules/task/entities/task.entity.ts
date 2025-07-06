@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import BaseEntity from 'src/utils/base.entity';
-import User from 'src/modules/user/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Entity()
 export default class Task extends BaseEntity {

@@ -31,8 +31,13 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return req.user;
+  async googleAuthRedirect(@Req() req) {
+    const user = await this.authService.googleSignup(req.user);
+    return {
+      status: 'successful',
+      message: 'user account created successfully via google',
+      data: user,
+    };
   }
 
   @Put('forgotPassword/:id')

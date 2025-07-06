@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import User from './entities/user.entity';
+import {User} from './entities/user.entity';
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUSerDto from './dtos/update-user.dto';
 
@@ -13,7 +13,7 @@ import UpdateUSerDto from './dtos/update-user.dto';
 export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  async createUser(body: CreateUserDto) {
+  async createUser(body: Partial<User>) {
     const user = this.repo.create(body);
     return this.repo.save(user);
   }

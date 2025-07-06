@@ -13,7 +13,8 @@ import { GenerateToken } from './interface/utility-interface';
 import { hash } from 'bcryptjs';
 import { updatePassword } from './interface/utility-interface';
 import UpdateUSerDto from '../user/dtos/update-user.dto';
-
+import { googleAuth } from './interface/utility-interface';
+import { AuthProvider } from '../user/entities/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
@@ -63,7 +64,7 @@ export class AuthService {
     return userPayload;
   }
 
-  async googleSignup(body: UpdateUSerDto) {
+  async googleSignup(body: googleAuth) {
     const { email } = body;
     if (!email) {
       throw new BadRequestException('email does not exist');
@@ -72,6 +73,13 @@ export class AuthService {
     if (check) {
       throw new Error('user already exist');
     }
+    const fullName = `${body.firstName} ${body.lastName}`;
+    const payload = {
+      fullName: fullName,
+      email: email,
+      provider: 'google' as AuthProvider,
+    };
+    const user = await this.userService.createUser(payload);
   }
 
   async forgotPassword(id: string, body: updatePassword) {

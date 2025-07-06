@@ -8,7 +8,7 @@ export enum AuthProvider {
 }
 
 @Entity()
-export default class User extends BaseEntity {
+export class User extends BaseEntity {
   @Column({ nullable: true })
   fullName: string;
 
