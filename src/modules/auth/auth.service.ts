@@ -1,12 +1,18 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import LoginDto from '../user/dtos/user-login.dto';
 import * as SYS_MSG from '../../utils/system-messages';
 import * as bcrypt from 'bcryptjs';
 import CreateUserDto from '../user/dtos/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { GenerateToken } from './interface/token-interface';
+import { GenerateToken } from './interface/utility-interface';
 import { hash } from 'bcryptjs';
+import { updatePassword } from './interface/utility-interface';
+import UpdateUSerDto from '../user/dtos/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -55,5 +61,33 @@ export class AuthService {
       data: { ...result },
     };
     return userPayload;
+  }
+
+  async googleSignup(body: UpdateUSerDto) {
+    const { email } = body;
+    if (!email) {
+      throw new BadRequestException('email does not exist');
+    }
+    const check = await this.userService.findByEmail(email);
+    if (check) {
+      throw new Error('user already exist');
+    }
+  }
+
+  async forgotPassword(id: string, body: updatePassword) {
+    const user = await this.userService.findById(id);
+    if (!user) {
+      throw new NotFoundException('user does not exist');
+    }
+
+    const extinguisher = await bcrypt.compare(body.password, user.password);
+    if (!extinguisher) {
+      throw new BadRequestException('incorrect password');
+    }
+    const hashedPassword = await hash(body.newPassword, 10);
+    const payload = {
+      password: hashedPassword,
+    };
+    return this.userService.updateUser(id, payload);
   }
 }
