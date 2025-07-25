@@ -14,13 +14,10 @@ import { GoogleStrategy } from './strategies/google.strategy';
     UserModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const secret = configService.get<string>('auth.jwtSecret');
-        return {
-          secret,
-          signOptions: { expiresIn: configService.get('auth.jwtExpiry') },
-        };
-      },
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('auth.jwtSecret'),
+        signOptions: { expiresIn: configService.get('auth.jwtExpiry') },
+      }),
     }),
   ],
   providers: [AuthService, JwtStrategy, GoogleStrategy],
