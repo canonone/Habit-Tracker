@@ -1,6 +1,7 @@
 import { Entity, Column, OneToMany, BeforeInsert } from 'typeorm';
 import BaseEntity from 'src/utils/base.entity';
 import Task from 'src/modules/task/entities/task.entity';
+import { RefreshToken } from 'src/modules/auth/entities/refresh-token.entity';
 
 export enum AuthProvider {
   LOCAL = 'local',
@@ -9,8 +10,11 @@ export enum AuthProvider {
 
 @Entity()
 export class User extends BaseEntity {
-  @Column({ nullable: true })
-  fullName: string;
+  @Column()
+  firstname: string;
+
+  @Column()
+  lastname: string;
 
   @Column()
   email: string;
@@ -28,4 +32,7 @@ export class User extends BaseEntity {
     nullable: false,
   })
   provider: AuthProvider;
+
+  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
+  refreshToken: RefreshToken[];
 }

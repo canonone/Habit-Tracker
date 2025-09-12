@@ -2,6 +2,7 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
+import { AuthProvider } from '../user/entities/user.entity';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -39,9 +40,17 @@ describe('AuthService', () => {
       (userService.createUser as jest.Mock).mockResolvedValue(mockedUser);
 
       const payload = {
-        fullName: 'john Doe',
         email: 'newUser@name.com',
         password: 'asdf1234',
+        firstname: 'john',
+        lastname: 'Doe',
+        tasks: [],
+        provider: AuthProvider.LOCAL,
+        refreshToken: [],
+        id: "12345",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        // Add other required properties with default/mock values as needed
       };
 
       const result = await authService.register(payload);

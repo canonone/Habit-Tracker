@@ -12,6 +12,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  app.enableCors({
+    origin: 'http://localhost:3000', // React dev server
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   app.listen(process.env.PORT || 5000, () => {
     console.log('server is running on port 5000');
   });

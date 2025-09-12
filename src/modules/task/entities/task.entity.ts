@@ -11,7 +11,7 @@ export default class Task extends BaseEntity {
   description: string;
 
   @Column({ type: 'boolean', default: false })
-  isDone: boolean;
+  isDone?: boolean;
 
   @ManyToOne(() => User, (user) => user.tasks)
   @JoinColumn({ name: 'user_id' })

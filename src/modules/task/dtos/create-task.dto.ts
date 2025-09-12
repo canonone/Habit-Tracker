@@ -6,7 +6,4 @@ export default class CreateTaskDto {
 
   @IsString()
   description: string;
-
-  @IsBoolean()
-  isDone?: boolean;
 }
