@@ -27,19 +27,17 @@ export class AuthController {
 
   @Post('/register')
   async register(@Body() userDto: CreateUserDto) {
-    const check = await this.authService.register(userDto);
-    return check;
+    return await this.authService.register(userDto);
   }
 
   @Post('/login')
   async userLogin(
     @Body() loginDto: LoginDto,
     @Req() req: Request,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const user = await this.authService.validateUser(loginDto);
     const { accessToken, refreshToken } =
-      await this.authService.generateToken(user);
+      await this.authService.loginUser(loginDto);
     const clientType = req.headers['x-client-type']?.toString().toLowerCase();
 
     if (clientType === 'mobile') {

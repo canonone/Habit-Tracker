@@ -18,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from '../user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
-import ms from 'ms';
+import * as ms from 'ms';
 @Injectable()
 export class AuthService {
   constructor(
@@ -91,14 +91,13 @@ export class AuthService {
     const user = await this.validateUser(login);
     const { password, ...result } = user;
     const { accessToken, refreshToken } = await this.generateToken(user);
-    const userPayload = {
+    return {
       status: 'successful',
       message: 'User logged in successfully',
       accessToken: accessToken,
       refreshToken: refreshToken,
       user: { ...result },
     };
-    return userPayload;
   }
 
   async googleSignup(body: googleAuth) {
