@@ -7,6 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import JwtStrategy from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RefreshToken } from './entities/refresh-token.entity';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
         signOptions: { expiresIn: configService.get('auth.jwtExpiry') },
       }),
     }),
+    TypeOrmModule.forFeature([RefreshToken]),
   ],
   providers: [AuthService, JwtStrategy, GoogleStrategy],
   controllers: [AuthController],
