@@ -81,7 +81,7 @@ export class AuthService {
     const { password: check, ...result } = user;
     return {
       status: 'successful',
-      message: 'User account creatd successfully',
+      message: 'User account created successfully',
       token: accessToken,
       user: { ...result },
     };

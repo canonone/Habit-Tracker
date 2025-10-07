@@ -18,7 +18,7 @@ async function bootstrap() {
     credentials: true,
   });
   app.listen(process.env.PORT || 5000, () => {
-    console.log('server is running on port 5000');
+    console.log(`server is running on port ${process.env.PORT}`);
   });
 }
 bootstrap();
